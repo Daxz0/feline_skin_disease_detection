@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:design_1/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:design_1/custom_app_bar.dart';
 import 'package:design_1/utils/constants.dart';
@@ -33,8 +36,17 @@ class SignUpScreen extends StatelessWidget {
   }
 }
 
-class SignUp extends StatelessWidget {
-  const SignUp({super.key});
+class SignUp extends StatefulWidget {
+  @override
+  State<SignUp> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUp> {
+  final _auth = AuthService();
+
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +70,7 @@ class SignUp extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 16),
               child: TextField(
+                controller: _nameController,
                 obscureText: false,
                 decoration: InputDecoration(
                   hintText: "NAME",
@@ -80,6 +93,7 @@ class SignUp extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 16),
               child: TextField(
+                controller: _emailController,
                 obscureText: false,
                 decoration: InputDecoration(
                   hintText: "EMAIL",
@@ -101,6 +115,7 @@ class SignUp extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 16),
               child: TextField(
+                controller: _passwordController,
                 obscureText: false,
                 decoration: InputDecoration(
                   hintText: "PASSWORD",
@@ -125,7 +140,9 @@ class SignUp extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _signUp;
+                  },
                   style: TextButton.styleFrom(
                     backgroundColor: COLOR_MAIN,
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -144,5 +161,14 @@ class SignUp extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _signUp() async {
+    final user = await _auth.createUserWithEmailAndPassword(_emailController.text, _passwordController.text);
+
+    if (user != null) {
+      log("User Created Succesfully");
+      Navigator.pushReplacementNamed(context, '/home');
+    }
   }
 }

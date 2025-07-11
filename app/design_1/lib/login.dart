@@ -33,8 +33,20 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class Login extends StatefulWidget {
+  @override
+  State<Login> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<Login> {  
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +83,10 @@ class Login extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 16),
               child: TextField(
+                controller: _emailController,
                 obscureText: false,
                 decoration: InputDecoration(
-                  hintText: "USERNAME",
+                  hintText: "EMAIL",
                   filled: true,
                   fillColor: COLOR_GRAY,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -93,6 +106,7 @@ class Login extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 16),
               child: TextField(
+                controller: _passwordController,
                 obscureText: false,
                 decoration: InputDecoration(
                   hintText: "PASSWORD",

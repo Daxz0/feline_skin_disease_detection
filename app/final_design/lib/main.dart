@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:design_1/login.dart';
-import 'package:design_1/home.dart';
-import 'package:design_1/sign_up.dart';
-import 'package:design_1/streak.dart';
+import 'package:final_design/login.dart';
+import 'package:final_design/home.dart';
+import 'package:final_design/sign_up.dart';
+import 'package:final_design/streak.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:final_design/firebase_options.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp();
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -30,4 +31,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
