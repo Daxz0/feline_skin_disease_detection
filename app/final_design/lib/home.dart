@@ -110,6 +110,7 @@ class _HomeState extends State<Home> {
         S3ApiService.uploadFile(file, "$CURRENT_USER");
       });
     }
+
     Navigator.pushNamed(context, '/recent_diagnosis');
   }
 

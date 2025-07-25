@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:final_design/aws_s3_api.dart';
 import 'package:final_design/streak_data.dart';
 import 'package:flutter/material.dart';
 import 'package:final_design/utils/constants.dart';
@@ -56,9 +59,20 @@ class Streak extends StatelessWidget {
 
   Streak({super.key});
 
+  Future<void> updateStreak() async {
+    if (await S3ApiService.folderExists("$CURRENT_USER/$TODAY_DATE/")) {
+      streakData.setStatus(DateTime.now(), "done");
+      log("Done");
+    }
+  }
+
+  bool isStoredDate(DateTime day) {
+    return streakData.get().keys.any((d) => isSameDay(d, day));
+  }
+
   @override
   Widget build(BuildContext context) {
-    streakData.setStatus(DateTime.utc(2025, 7, 9), "done");
+    updateStreak();
 
     return Container(
       padding: const EdgeInsets.only(top: 34, left: 61, right: 61),
@@ -69,45 +83,34 @@ class Streak extends StatelessWidget {
             focusedDay: today,
             firstDay: DateTime.utc(2025, 7, 8),
             lastDay: DateTime.utc(3025, 7, 8),
+            calendarStyle: CalendarStyle(isTodayHighlighted: false),
             calendarBuilders:
                 CalendarBuilders(defaultBuilder: (context, day, focusedDay) {
-              final status = streakData.getStatus(day);
+              if (isStoredDate(day)) {
+                Color bgColor =
+                    streakData.getColor(DateTime.now(), Colors.transparent);
 
-              Color bgColor;
-              switch (status) {
-                case "done":
-                  bgColor = COLOR_GREEN;
-                  break;
-                case "high_risk":
-                  bgColor = COLOR_RED;
-                  break;
-                case "low_risk":
-                  bgColor = COLOR_YELLOW;
-                  break;
-                default:
-                  bgColor = Colors.transparent;
-              }
-
-              return Container(
-                margin: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: bgColor,
-                  shape: BoxShape.circle,
-                ),
-                width: 40,
-                height: 40,
-                child: Center(
-                  child: Text(
-                    '${day.day}',
-                    style: TextStyle(
-                      color: bgColor == Colors.transparent
-                          ? Colors.black
-                          : Colors.white,
-                      fontWeight: FontWeight.bold,
+                return Container(
+                  margin: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: bgColor,
+                    shape: BoxShape.circle,
+                  ),
+                  width: 40,
+                  height: 40,
+                  child: Center(
+                    child: Text(
+                      '${day.day}',
+                      style: TextStyle(
+                        color: bgColor == Colors.transparent
+                            ? COLOR_BLACK
+                            : COLOR_WHITE,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
+              }
             }),
           )
         ],

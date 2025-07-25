@@ -1,14 +1,17 @@
 import 'package:final_design/utils/constants.dart';
+import 'package:final_design/streak_data.dart';
 import 'package:flutter/material.dart';
 
 class StaticMiniCalendar extends StatelessWidget {
-  const StaticMiniCalendar({super.key});
+  final StreakData streakData = StreakData();
 
-  List<String> getLast7DaysDateNumbers() {
+  StaticMiniCalendar({super.key});
+
+  List<int> getLast7DaysDateNumbers() {
     final today = DateTime.now();
     return List.generate(7, (index) {
       final date = today.subtract(Duration(days: 6 - index));
-      return date.day.toString();
+      return date.day;
     });
   }
 
@@ -19,8 +22,11 @@ class StaticMiniCalendar extends StatelessWidget {
       dateWidgets.add(
         CircleAvatar(
             radius: 21,
-            backgroundColor: COLOR_GRAY,
-            child: Text(getLast7DaysDateNumbers()[i],
+            backgroundColor: streakData.getColor(
+                DateTime.utc(DateTime.now().year, DateTime.now().month,
+                    getLast7DaysDateNumbers()[i]),
+                COLOR_GRAY),
+            child: Text(getLast7DaysDateNumbers()[i].toString(),
                 style: textThemeWhite.titleSmall)),
       );
     }
