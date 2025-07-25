@@ -1,7 +1,10 @@
+import 'package:final_design/aws_s3_api.dart';
 import 'package:flutter/material.dart';
 import 'package:final_design/utils/constants.dart';
 import 'package:final_design/mini_calendar.dart';
 import 'package:final_design/drawer.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,7 +23,7 @@ class HomeScreen extends StatelessWidget {
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.only(top: 60),
                         child: Text(
                           "Hello [Username]!",
                           style: textThemeWhite.displaySmall,
@@ -35,7 +38,10 @@ class HomeScreen extends StatelessWidget {
                                   const EdgeInsets.symmetric(horizontal: 20)),
                           Expanded(
                             child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/recent_diagnosis');
+                                },
                                 style: TextButton.styleFrom(
                                   backgroundColor: COLOR_MAIN_TRANSPARENT,
                                   padding: EdgeInsets.symmetric(
@@ -84,16 +90,36 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  XFile? _imageFile;
+
+  Future<void> _pickImageFromCamera() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = pickedFile;
+        File file = File(_imageFile!.path);
+        S3ApiService.uploadFile(file, "$CURRENT_USER");
+      });
+    }
+    Navigator.pushNamed(context, '/recent_diagnosis');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(
+        child: Container(
       padding: const EdgeInsets.only(top: 34, left: 61, right: 61),
       child: Column(
         children: [
-          // "New Scan" Text
           Align(
               alignment: Alignment.center,
               child: Text(
@@ -131,7 +157,7 @@ class Home extends StatelessWidget {
                     SizedBox(height: 40),
                     Expanded(
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: _pickImageFromCamera,
                             style: TextButton.styleFrom(
                               backgroundColor: COLOR_MAIN,
                               padding: EdgeInsets.symmetric(
@@ -147,9 +173,19 @@ class Home extends StatelessWidget {
                     Padding(padding: const EdgeInsets.only(bottom: 65)),
                   ],
                 ),
-              ))
+              )),
+          if (_imageFile != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Image.file(
+                File(_imageFile!.path),
+                width: 200,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+            ),
         ],
       ),
-    );
+    ));
   }
 }

@@ -51,7 +51,12 @@ Drawer createDrawer(BuildContext context, String currentScreen) {
               style: textThemeWhite.titleSmall,
             ),
             onTap: () {
-              //TODO
+              if (ModalRoute.of(context)?.settings.name ==
+                  '/recent_diagnosis') {
+                Navigator.of(context).pop();
+              } else {
+                Navigator.pushReplacementNamed(context, '/recent_diagnosis');
+              }
             }),
         ListTile(
             leading: Icon(Icons.settings, color: COLOR_WHITE, size: 24.0),

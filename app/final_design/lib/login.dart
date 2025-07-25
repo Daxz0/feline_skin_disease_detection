@@ -54,7 +54,8 @@ class _LoginScreenState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(
+        child: Container(
       padding: const EdgeInsets.only(top: 34, left: 61, right: 61),
       child: Column(
         children: [
@@ -164,12 +165,12 @@ class _LoginScreenState extends State<Login> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   _signIn() async {
     final user = await _auth.loginUserWithEmailAndPassword(
-        _emailController.text, _passwordController.text);
+        email: _emailController.text, password: _passwordController.text);
 
     if (user != null) {
       log("User Created Succesfully");

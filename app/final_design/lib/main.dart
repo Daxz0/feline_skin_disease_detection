@@ -3,6 +3,7 @@ import 'package:final_design/login.dart';
 import 'package:final_design/home.dart';
 import 'package:final_design/sign_up.dart';
 import 'package:final_design/streak.dart';
+import 'package:final_design/results.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:final_design/firebase_options.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomeScreen(),
         '/sign_up': (context) => SignUpScreen(),
         '/streak': (context) => StreakScreen(),
+        '/recent_diagnosis': (context) => RecentDiagnosisScreen(),
       },
     );
   }
