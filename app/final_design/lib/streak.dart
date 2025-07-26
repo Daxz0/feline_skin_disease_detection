@@ -79,7 +79,8 @@ class Streak extends StatelessWidget {
       child: Column(
         children: [
           TableCalendar(
-            headerStyle: HeaderStyle(formatButtonVisible: false),
+            headerStyle:
+                HeaderStyle(formatButtonVisible: false, titleCentered: true),
             focusedDay: today,
             firstDay: DateTime.utc(2025, 7, 8),
             lastDay: DateTime.utc(3025, 7, 8),
