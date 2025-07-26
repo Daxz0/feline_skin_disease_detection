@@ -5,7 +5,7 @@ import 'package:final_design/sign_up.dart';
 import 'package:final_design/streak.dart';
 import 'package:final_design/results.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:final_design/firebase_options.dart';
+import 'package:final_design/utils/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

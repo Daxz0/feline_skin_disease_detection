@@ -1,9 +1,9 @@
 import 'dart:developer';
-import 'package:final_design/custom_text_fields.dart';
+import 'package:final_design/utils/custom_text_fields.dart';
 import 'package:flutter/material.dart';
-import 'package:final_design/custom_app_bar.dart';
+import 'package:final_design/utils/custom_app_bar.dart';
 import 'package:final_design/utils/constants.dart';
-import 'package:final_design/auth_service.dart';
+import 'package:final_design/utils/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
