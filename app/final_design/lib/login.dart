@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:final_design/custom_text_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:final_design/custom_app_bar.dart';
 import 'package:final_design/utils/constants.dart';
@@ -79,47 +79,12 @@ class _LoginScreenState extends State<Login> {
                     textAlign: TextAlign.center,
                   ))),
 
-          // Username text field
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: TextField(
-                    controller: _emailController,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      hintText: "EMAIL",
-                      filled: true,
-                      fillColor: COLOR_GRAY,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none),
-                    ),
-                    style: textThemeColor.bodyMedium,
-                  ))),
-
-          // Password text field
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      hintText: "PASSWORD",
-                      filled: true,
-                      fillColor: COLOR_GRAY,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none),
-                    ),
-                    style: textThemeColor.bodyMedium,
-                  ))),
+          const SizedBox(height: 16),
+          CustomTextFields.buildTextFieldDesign1(_emailController, "EMAIL"),
+          const SizedBox(height: 16),
+          CustomTextFields.buildTextFieldDesign1(
+              _passwordController, "PASSWORD",
+              obscure: true),
 
           // Log in text button
           Align(

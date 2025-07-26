@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:final_design/auth_service.dart';
 import 'package:final_design/aws_s3_api.dart';
 import 'package:final_design/custom_app_bar.dart';
+import 'package:final_design/custom_text_fields.dart';
 import 'package:final_design/utils/constants.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -80,26 +81,6 @@ class _SignUpScreenState extends State<SignUp> {
     }
   }
 
-  Widget _buildTextField(TextEditingController controller, String hint,
-      {bool obscure = false}) {
-    return TextField(
-      controller: controller,
-      obscureText: obscure,
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: COLOR_GRAY,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
-        ),
-      ),
-      style: textThemeColor.bodyMedium,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -116,11 +97,13 @@ class _SignUpScreenState extends State<SignUp> {
               ),
             ),
             const SizedBox(height: 16),
-            _buildTextField(_nameController, "NAME"),
+            CustomTextFields.buildTextFieldDesign1(_nameController, "NAME"),
             const SizedBox(height: 16),
-            _buildTextField(_emailController, "EMAIL"),
+            CustomTextFields.buildTextFieldDesign1(_emailController, "EMAIL"),
             const SizedBox(height: 16),
-            _buildTextField(_passwordController, "PASSWORD", obscure: true),
+            CustomTextFields.buildTextFieldDesign1(
+                _passwordController, "PASSWORD",
+                obscure: true),
             const SizedBox(height: 20),
             Align(
               alignment: Alignment.center,
