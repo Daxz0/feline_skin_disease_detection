@@ -6,10 +6,45 @@ import 'package:final_design/utils/constants.dart';
 import 'package:final_design/mini_calendar.dart';
 import 'package:final_design/drawer.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String? _userName;
+  bool _loadingUser = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserName();
+  }
+
+  Future<void> _fetchUserName() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      String? name = user?.displayName;
+      // fallback to email username if displayName is not set
+      if (name == null && user?.email != null) {
+        name = user!.email!.split('@').first;
+      }
+      setState(() {
+        _userName = name ?? 'User';
+        _loadingUser = false;
+      });
+    } catch (_) {
+      setState(() {
+        _userName = 'User';
+        _loadingUser = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +61,20 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 60),
-                        child: Text(
-                          "Hello [Username]!",
-                          style: textThemeWhite.displaySmall,
-                        ),
+                        child: _loadingUser
+                            ? SizedBox(
+                                height: textThemeWhite.displaySmall!.fontSize,
+                                width: textThemeWhite.displaySmall!.fontSize,
+                                child: CircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation(COLOR_WHITE),
+                                  strokeWidth: 2.5,
+                                ),
+                              )
+                            : Text(
+                                "Hello ${_userName}!",
+                                style: textThemeWhite.displaySmall,
+                              ),
                       ),
                       StaticMiniCalendar(),
                       Row(
@@ -111,7 +156,7 @@ class _HomeState extends State<Home> {
 
     final file = File(pickedFile.path);
     final fileName = pickedFile.name; // or: path.split('/').last
-    final userId = CURRENT_USER!; // or handle null safely
+    final userId = CURRENT_USER_UID!; // or handle null safely
 
     setState(() {
       _imageFile = pickedFile;

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class S3ApiService {
   static const baseUrl =
-      "https://7db9719b36cb.ngrok-free.app"; // replace with your deployed endpoint in production
+      "https://8ee5167607e2.ngrok-free.app"; // replace with your deployed endpoint in production
 
   // List S3 objects under a prefix
   static Future<List<String>> listObjectPaths({String prefix = ''}) async {

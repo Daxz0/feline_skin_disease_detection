@@ -57,7 +57,7 @@ class RecentDiagnosis extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: S3ApiService.folderExists("$CURRENT_USER/$TODAY_DATE/"),
+      future: S3ApiService.folderExists("$CURRENT_USER_UID/$TODAY_DATE/"),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -70,7 +70,7 @@ class RecentDiagnosis extends StatelessWidget {
         // If folder exists, fetch object paths
         return FutureBuilder<List<String>>(
           future: S3ApiService.listObjectPaths(
-              prefix: "$CURRENT_USER/$TODAY_DATE/annotated_images/"),
+              prefix: "$CURRENT_USER_UID/$TODAY_DATE/annotated_images/"),
           builder: (context, listSnapshot) {
             if (listSnapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());

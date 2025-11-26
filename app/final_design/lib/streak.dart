@@ -60,7 +60,7 @@ class Streak extends StatelessWidget {
   Streak({super.key});
 
   Future<void> updateStreak() async {
-    if (await S3ApiService.folderExists("$CURRENT_USER/$TODAY_DATE/")) {
+    if (await S3ApiService.folderExists("$CURRENT_USER_UID/$TODAY_DATE/")) {
       streakData.setStatus(DateTime.now(), "done");
       log("Done");
     }

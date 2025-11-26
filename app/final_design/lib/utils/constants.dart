@@ -12,7 +12,9 @@ double getScreenWidth(BuildContext context) {
 
 final TODAY_DATE =
     DateFormat('MMMMddyyyy').format(DateTime.now()).toLowerCase();
-final CURRENT_USER = FirebaseAuth.instance.currentUser?.uid;
+final CURRENT_USER = FirebaseAuth.instance.currentUser;
+final CURRENT_USER_UID = CURRENT_USER?.uid;
+final CURRENT_USER_NAME = CURRENT_USER?.displayName;
 
 const COLOR_WHITE = Colors.white;
 const COLOR_GRAY = Color.fromRGBO(143, 142, 142, 0.37);
