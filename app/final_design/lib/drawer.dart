@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:final_design/utils/constants.dart';
 
@@ -65,6 +66,34 @@ Drawer createDrawer(BuildContext context, String currentScreen) {
               style: textThemeWhite.titleSmall,
             ),
             onTap: () {}),
+        ListTile(
+            leading: Icon(Icons.exit_to_app, color: COLOR_WHITE, size: 24.0),
+            title: Text(
+              "Sign out",
+              style: textThemeWhite.titleSmall,
+            ),
+            onTap: () {
+              try {
+                FirebaseAuth.instance.signOut();
+                Navigator.pushReplacementNamed(context, '/');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Sign out successfully'),
+                    duration: const Duration(
+                        seconds: 3), // Optional: how long it stays visible
+                  ),
+                );
+                // Navigate to login screen
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Error signing out'),
+                    duration: const Duration(
+                        seconds: 3), // Optional: how long it stays visible
+                  ),
+                );
+              }
+            })
       ],
     ),
   );

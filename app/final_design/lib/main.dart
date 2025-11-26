@@ -6,9 +6,14 @@ import 'package:final_design/streak.dart';
 import 'package:final_design/results.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:final_design/utils/firebase_options.dart';
+import 'package:flutter/services.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
