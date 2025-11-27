@@ -44,6 +44,14 @@ class AuthService {
     await _auth.signOut();
   }
 
+  Future<void> sendPasswordResetLink(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      throw Exception("An unkown error occured: $e");
+    }
+  }
+
   /// Get the current logged-in user
   User? get currentUser => _auth.currentUser;
 

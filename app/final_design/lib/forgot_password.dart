@@ -1,12 +1,11 @@
-import 'dart:developer';
 import 'package:final_design/utils/custom_text_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:final_design/utils/custom_app_bar.dart';
 import 'package:final_design/utils/constants.dart';
 import 'package:final_design/utils/auth_service.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class ForgotPasswordScreen extends StatelessWidget {
+  const ForgotPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class LoginScreen extends StatelessWidget {
           height: getScreenHeight(context) * 0.30,
           action: TextButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/sign_up');
+                Navigator.pushReplacementNamed(context, '/');
               },
               style: TextButton.styleFrom(
                 backgroundColor: COLOR_MAIN_LIGHT,
@@ -26,20 +25,20 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               child: Text(
-                "Get Started",
+                "Log In",
                 style: textThemeColor.bodySmall,
               )),
         ),
-        body: Login());
+        body: ForgotPassword());
   }
 }
 
-class Login extends StatefulWidget {
+class ForgotPassword extends StatefulWidget {
   @override
-  State<Login> createState() => _LoginScreenState();
+  State<ForgotPassword> createState() => _ForgotPasswordScreenState();
 }
 
-class _LoginScreenState extends State<Login> {
+class _ForgotPasswordScreenState extends State<ForgotPassword> {
   final _auth = AuthService();
 
   final _emailController = TextEditingController();
@@ -63,7 +62,7 @@ class _LoginScreenState extends State<Login> {
           Align(
               alignment: Alignment.center,
               child: Text(
-                "Welcome!",
+                "Forgot Password?",
                 style: textThemeColor.displayMedium,
                 textAlign: TextAlign.center,
               )),
@@ -72,19 +71,12 @@ class _LoginScreenState extends State<Login> {
           Align(
               alignment: Alignment.center,
               child: Padding(
-                  padding: const EdgeInsets.only(top: 55),
-                  child: Text(
-                    "Sign in to continue!",
-                    style: textThemeColor.bodySmall,
-                    textAlign: TextAlign.center,
-                  ))),
+                padding: const EdgeInsets.only(top: 55),
+              )),
 
           const SizedBox(height: 16),
           CustomTextFields.buildTextFieldDesign1(_emailController, "EMAIL"),
           const SizedBox(height: 16),
-          CustomTextFields.buildTextFieldDesign1(
-              _passwordController, "PASSWORD",
-              obscure: true),
 
           // Log in text button
           Align(
@@ -94,8 +86,31 @@ class _LoginScreenState extends State<Login> {
                 child: SizedBox(
                   width: double.infinity,
                   child: TextButton(
-                      onPressed: () {
-                        _signIn();
+                      onPressed: () async {
+                        try {
+                          await _auth
+                              .sendPasswordResetLink(_emailController.text);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                  'An email has been sent to your email.'),
+                              duration: const Duration(
+                                  seconds:
+                                      3), // Optional: how long it stays visible
+                            ),
+                          );
+                          Navigator.pushReplacementNamed(context, '/');
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                  "Something didn't go right, please try again"),
+                              duration: const Duration(
+                                  seconds:
+                                      3), // Optional: how long it stays visible
+                            ),
+                          );
+                        }
                       },
                       style: TextButton.styleFrom(
                         backgroundColor: COLOR_MAIN,
@@ -106,7 +121,7 @@ class _LoginScreenState extends State<Login> {
                         ),
                       ),
                       child: Text(
-                        "Log in",
+                        "Send New Password",
                         style: textThemeWhite.titleSmall,
                       )),
                 ),
@@ -119,10 +134,10 @@ class _LoginScreenState extends State<Login> {
               padding: const EdgeInsets.only(top: 45),
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/forgot_password');
+                  // TODO: Navigate to reset password screen or show dialog
                 },
                 child: Text(
-                  "Forgot Password?",
+                  "Don't see the link? Check your spam.",
                   style: textThemeColor.bodySmall,
                 ),
               ),
@@ -131,20 +146,5 @@ class _LoginScreenState extends State<Login> {
         ],
       ),
     ));
-  }
-
-  _signIn() async {
-    final user = await _auth.loginUserWithEmailAndPassword(
-        email: _emailController.text, password: _passwordController.text);
-
-    if (user != null) {
-      log("User Created Succesfully");
-      Navigator.pushReplacementNamed(context, '/home');
-    } else {
-      // Show error: user does not exist or wrong credentials
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid email or password')),
-      );
-    }
   }
 }

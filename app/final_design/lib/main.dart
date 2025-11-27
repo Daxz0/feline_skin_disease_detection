@@ -1,3 +1,4 @@
+import 'package:final_design/forgot_password.dart';
 import 'package:flutter/material.dart';
 import 'package:final_design/login.dart';
 import 'package:final_design/home.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUpScreen(),
         '/streak': (context) => StreakScreen(),
         '/recent_diagnosis': (context) => RecentDiagnosisScreen(),
+        '/forgot_password': (context) => ForgotPasswordScreen(),
       },
     );
   }
